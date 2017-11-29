@@ -5,7 +5,7 @@ TEST(TestThreadPool, ParallelAccumulate)
 {
 	std::vector<int> vec;
 
-	for (auto i = 0; i < 100; ++i)
+	for (auto i = 0; i < 1000; ++i)
 	{
 		vec.push_back(1);
 	}
@@ -16,7 +16,8 @@ TEST(TestThreadPool, ParallelAccumulate)
 
 	auto itStart = vec.begin();
 	auto itEnd = itStart;
-	std::advance(itEnd, 25);
+    auto step = 50;
+	std::advance(itEnd, step);
 
 	std::vector<std::future<int>> futures;
 
@@ -29,7 +30,7 @@ TEST(TestThreadPool, ParallelAccumulate)
 		}));
 
 		itStart = itEnd;
-		std::advance(itEnd, 25);
+		std::advance(itEnd, step);
 	}
 
 	futures.push_back(pool.Submit(
@@ -44,7 +45,7 @@ TEST(TestThreadPool, ParallelAccumulate)
 	{
 		auto buf = f.get();
 
-		ASSERT_EQ(25, buf);
+		ASSERT_EQ(step, buf);
 		parallelRes += buf;
 	}
 

@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "ThreadPool.h"
 
-thread_local WorkStealQueue<FunctionWrapper>* ThreadPool::m_localThreadQueue;
-thread_local unsigned ThreadPool::m_threadIndex;
-
 ThreadPool::ThreadPool()
     : m_done(false)
 {
@@ -13,9 +10,7 @@ ThreadPool::ThreadPool()
     {
         for (unsigned i = 0; i < threadCount; ++i)
         {
-            m_threadQueues.push_back(std::unique_ptr<ThreadQueue>(new ThreadQueue));
-
-            m_threads.push_back(std::async(&ThreadPool::WorkerThread, this, i));
+            m_threads.push_back(std::async(&ThreadPool::WorkerThread, this));
         }
     }
     catch (std::system_error& ex)
@@ -30,6 +25,7 @@ ThreadPool::ThreadPool()
 ThreadPool::~ThreadPool()
 {
     m_done = true;
+    m_cond.notify_all();
 
 	try
 	{
@@ -51,49 +47,30 @@ ThreadPool::~ThreadPool()
 void ThreadPool::RunPendingTask()
 {
     TaskType task;
-    if (GetTaskFromLocal(task)
-        || GetTaskFromMain(task)
-        || GetTaskFromOther(task))
+
+    if (m_mainQueue.try_pop(task))
     {
-            task(); 
-    }
-    else
-    {
-        std::this_thread::yield();
+        task();
     }
 }
 
-void ThreadPool::WorkerThread(unsigned threadIndex)
+void ThreadPool::WorkerThread()
 {
-    m_threadIndex = threadIndex;
-    m_localThreadQueue = m_threadQueues[threadIndex].get();
-
     while (!m_done)
     {
-        RunPendingTask();
-    }
-}
+        TaskType task;
+        std::unique_lock<std::mutex> lock(m_lock);
 
-bool ThreadPool::GetTaskFromLocal(TaskType & task)
-{
-    return m_localThreadQueue && m_localThreadQueue->try_pop(task);
-}
-
-bool ThreadPool::GetTaskFromMain(TaskType & task)
-{
-    return m_mainQueue.try_pop(task);
-}
-
-bool ThreadPool::GetTaskFromOther(TaskType & task)
-{
-    for (size_t i = 0, size = m_threadQueues.size(); i < size; ++i)
-    {
-        auto index = (m_threadIndex + i + 1) % size;
-        if (m_threadQueues[index]->try_steal(task))
+        m_cond.wait(lock, 
+            [this, &task]() -> bool
         {
-            return true;
+            return m_mainQueue.try_pop(task) || m_done;
+        });
+
+        if (!m_done)
+        {
+            task();
         }
     }
 
-    return false;
 }
