@@ -72,5 +72,4 @@ void ThreadPool::WorkerThread()
             task();
         }
     }
-
 }
