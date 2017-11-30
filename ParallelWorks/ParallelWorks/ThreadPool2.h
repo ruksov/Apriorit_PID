@@ -74,12 +74,10 @@ public:
 
     void RunPendingTask()
     {
-        TaskType task;
-
         std::unique_lock<std::mutex> lock(m_lock);
         if (!m_workStack.empty())
         {
-            task = std::move(*m_workStack.top());
+            TaskType task = std::move(*m_workStack.top());
             m_workStack.pop();
             lock.unlock();
 
