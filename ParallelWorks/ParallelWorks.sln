@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParallelWorks", "ParallelWorks\ParallelWorks.vcxproj", "{560EA01A-4209-45BE-808F-E099E1A5C799}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestParallelWorks", "TestParallelWorks\TestParallelWorks.vcxproj", "{04A3822B-F3F4-48BB-A611-1FD877C7BFE1}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SearchExecute", "SearchExecute\SearchExecute.vcxproj", "{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +31,6 @@ Global
 		{04A3822B-F3F4-48BB-A611-1FD877C7BFE1}.Release|x64.Build.0 = Release|x64
 		{04A3822B-F3F4-48BB-A611-1FD877C7BFE1}.Release|x86.ActiveCfg = Release|Win32
 		{04A3822B-F3F4-48BB-A611-1FD877C7BFE1}.Release|x86.Build.0 = Release|Win32
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Debug|x64.ActiveCfg = Debug|x64
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Debug|x64.Build.0 = Debug|x64
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Debug|x86.ActiveCfg = Debug|Win32
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Debug|x86.Build.0 = Debug|Win32
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Release|x64.ActiveCfg = Release|x64
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Release|x64.Build.0 = Release|x64
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Release|x86.ActiveCfg = Release|Win32
-		{7311DCE2-F0D7-4058-8E2B-D4B108714DB0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

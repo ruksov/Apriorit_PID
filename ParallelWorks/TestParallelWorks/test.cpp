@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ThreadPool.h"
+#include "ThreadPool2.h"
 
 TEST(TestThreadPool, ParallelAccumulate)
 {
