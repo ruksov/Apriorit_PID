@@ -104,9 +104,8 @@ private:
                 lock.unlock();
 
                 task();
-            }
-
-            lock.lock();
+                lock.lock();
+            }          
         }
     }
 
